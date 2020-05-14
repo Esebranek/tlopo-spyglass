@@ -1,1 +1,1 @@
-web: gunicorn spyglass/app:app
+web: gunicorn --chdir spyglass app:app

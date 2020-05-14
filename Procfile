@@ -1,1 +1,1 @@
-web: gunicorn spyglass:app
+web: gunicorn spyglass/app:app

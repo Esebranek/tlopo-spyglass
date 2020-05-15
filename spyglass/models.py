@@ -2,13 +2,9 @@ import re
 
 # Application Version
 class Version:
-    def __init__(self):
-        with open('version', 'r') as version_file:
-            data = version_file.read()
-            print(data)
-            match = re.search('((?<=version=).*)', data)
-            print(match.group(0))
-            self._version = match.group(0)
+    def __init__(self, version):
+        # TODO: Build this into the app instead
+        self._version = version
     
     def get_version(self):
         return self._version

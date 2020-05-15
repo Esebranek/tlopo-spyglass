@@ -7,6 +7,9 @@ from spyglass.response_models import StatusResponse, VersionResponse, OceansResp
 from spyglass.models import Version, Ocean
 
 
+APP_VERSION='0.0.2'
+
+
 application = Flask(__name__)
 
 
@@ -19,10 +22,10 @@ def get_status() -> Response:
 
 @application.route('/version')
 def get_version() -> Response:
-    version: Version = Version()
+    version: Version = Version(APP_VERSION)
     response: VersionResponse = VersionResponse(version)
     return make_response(response.get_json(), 200)
-    
+
 
 @application.route('/oceans')
 def get_oceans() -> Response:

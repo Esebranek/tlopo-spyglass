@@ -1,4 +1,5 @@
 from flask import Flask, Response, make_response
+from flask_cors import CORS
 from json import dumps
 from typing import List
 
@@ -11,7 +12,7 @@ APP_VERSION='0.0.2'
 
 
 application = Flask(__name__)
-
+CORS(application)
 
 
 @application.route('/up')

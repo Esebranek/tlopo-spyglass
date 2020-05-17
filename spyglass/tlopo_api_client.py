@@ -2,9 +2,13 @@ import requests
 from typing import List
 
 from spyglass.models import Ocean
+from spyglass.model_factory import ApiResponseMapper
 
 
 OCEAN_API = 'https://api.tlopo.com/shards'
+
+
+response_mapper = ApiResponseMapper()
 
 
 # Get ocean information
@@ -15,4 +19,4 @@ def get_oceans() -> List[Ocean]:
         pass
     data = response.json()
     # Return data mapped to Ocean objects
-    return list(map(lambda o: Ocean(o['name'], o['available'], o['population'], o['created'], None, None), [data[key] for key in data.keys()]))
+    return response_mapper.oceans_factory(data)

@@ -8,11 +8,17 @@ from spyglass.response_models import StatusResponse, VersionResponse, OceansResp
 from spyglass.models import Version, Ocean
 
 
-APP_VERSION='0.0.2'
+APP_VERSION='0.1.0'
 
 
 application = Flask(__name__)
 CORS(application)
+
+
+@application.errorhandler(404)
+def handle_not_found(e) -> Response:
+    response: StatusResponse = StatusResponse('not_found')
+    return make_response(response.get_json(), 404)
 
 
 @application.route('/up')

@@ -102,4 +102,4 @@ def broadcast_oceans() -> None:
 
 
 if __name__ == '__main__':
-    socketio.run(application)
+    socketio.run(application, port=int(os.environ.get('PORT', '8000')))

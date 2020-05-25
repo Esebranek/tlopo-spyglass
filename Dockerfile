@@ -16,4 +16,4 @@ COPY ./spyglass ./spyglass
 
 EXPOSE 8000
 
-CMD gunicorn --chdir spyglass -k gevent -w 1 app:application -b 0.0.0.0:8000
+CMD gunicorn --chdir spyglass -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 app:application -b 0.0.0.0:8000

@@ -1,6 +1,7 @@
 from flask import Flask, Response, make_response
 from flask_cors import CORS
 from flask_socketio import SocketIO
+from gevent import monkey; monkey.patch_socket()
 from json import dumps
 from typing import List
 from apscheduler.schedulers.gevent import GeventScheduler

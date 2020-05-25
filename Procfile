@@ -1,1 +1,1 @@
-web: gunicorn --chdir spyglass -k gevent -w 1 app:application
+web: gunicorn --chdir spyglass -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 app:application

@@ -1,7 +1,7 @@
+from os import getenv
 from flask import Flask, Response, make_response
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from gevent import monkey; monkey.patch_socket()
 from json import dumps
 from typing import List
 from apscheduler.schedulers.gevent import GeventScheduler
@@ -104,4 +104,4 @@ def broadcast_oceans() -> None:
 
 
 if __name__ == '__main__':
-    socketio.run(application, port=int(os.environ.get('PORT', '8000')))
+    socketio.run(application, port=int(getenv('PORT', '8000')))

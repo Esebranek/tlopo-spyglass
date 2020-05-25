@@ -39,6 +39,7 @@ dictConfig({
 application = Flask(__name__)
 CORS(application)
 socketio = SocketIO(application, cors_allowed_origins=["localhost"])
+socketio.logger=application.logger
 
 # Scheduler for socketio broadcast
 scheduler = GeventScheduler()

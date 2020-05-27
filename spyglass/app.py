@@ -1,11 +1,9 @@
 from os import getenv
 from flask import Flask, Response, make_response
 from flask_cors import CORS
-from flask_socketio import SocketIO
+from flask_caching import Cache
 from json import dumps
 from typing import List
-from apscheduler.schedulers.gevent import GeventScheduler
-from apscheduler.triggers.interval import IntervalTrigger
 from logging.config import dictConfig
 import logging
 
@@ -35,16 +33,18 @@ dictConfig({
     }
 })
 
+cache_config = {
+    "DEBUG": False,          # some Flask specific configs
+    "CACHE_TYPE": "simple", # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 60
+}
+
 
 # Applicaiton setup
 application = Flask(__name__)
 CORS(application)
-socketio = SocketIO(application, logger=True, engineio_logger=True)
-
-# Scheduler for socketio broadcast
-scheduler = GeventScheduler()
-trigger = IntervalTrigger(seconds=15)
-scheduler.start()
+application.config.from_mapping(cache_config)
+cache = Cache(application)
 
 
 # =============================================================================
@@ -77,30 +77,8 @@ def get_version() -> Response:
 
 # List Oceans Endpoint
 @application.route('/oceans')
+@cache.cached(timeout=15)
 def get_oceans() -> Response:
     oceans: List[Ocean] = api.get_oceans()
     response: OceansResponse = OceansResponse(oceans)
     return make_response(response.get_json(), 200)
-
-
-# =============================================================================
-#
-# SocketIO
-#
-# =============================================================================
-
-# New connection
-@socketio.on('connect')
-def handle_new_connection():
-    application.logger.info('New socketio connection')
-
-
-# Broadcast Cceans
-@scheduler.scheduled_job(trigger)
-def broadcast_oceans() -> None:
-    oceans: List[Ocean] = api.get_oceans()
-    socketio.emit('oceans_status', [ocean.get_dict() for ocean in oceans])
-
-
-if __name__ == '__main__':
-    socketio.run(application, port=int(getenv('PORT', '8000')))

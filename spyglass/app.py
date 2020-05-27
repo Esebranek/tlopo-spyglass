@@ -13,7 +13,7 @@ from spyglass.models import Version, Ocean
 
 
 # Application Versioning - I should move this
-APP_VERSION='0.1.0'
+APP_VERSION='0.2.0'
 
 
 # Logging Configuration
